@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+## Gogs GIT Repository
+  gogs:
+    image: gogs/gogs:latest
+    deploy:
+#      mode: replicated
+      replicas: 1
+    ports:
+      - "2222:2222"
+      - "3000:3000"
+## Web Service and Proxy
+  nginx:
+    image: nginx/nginx:alpine
+    deploy:
+#      mode: replicated
+      replicas: 1
+    ports:
+      - "8080:8080"
+## Container Management Dashboard
+  portainer:
+    image: portainer/portainer:latest
+    deploy:
+#      mode: replicated
+      replicas: 1
+    ports:
+      - "9000:9000"
+## RabbitMQ Message Bus
+  rabbitmq:
+    image: rabbitmq:alpine
+    deploy:
+#      mode: replicated
+      replicas: 1
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15674:15674"
+## Redis Key Store
+  redis:
+    image: redis:alpine
+    deploy:
+#      mode: replicated
+      replicas: 1
+## Web Reverse Proxy
+  traefik:
+    image: traefik:alpine
+    deploy:
+#      mode: replicated
+      replicas: 1
+    ports:
+      - "80:80"
+
+networks:
+  appnet:
+    driver: "bridge"
